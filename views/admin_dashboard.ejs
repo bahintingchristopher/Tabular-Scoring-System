@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="admin-header">
-    <h1>Admin Dashboard (Big Screen)</h1>
+    <h1>Admin Dashboard - Tabular Scoring System</h1>
     <div class="admin-controls">
       <form action="/admin/contestants/add" method="POST" class="inline">
         <input type="text" name="name" placeholder="Contestant name" required />
@@ -30,6 +30,36 @@
     <div class="status">
       Locked: <span id="locked-status"><%= settings.scores_locked === '1' ? 'YES' : 'NO' %></span>
     </div>
+  </div>
+
+  <div class="judge-access">
+    <h2>Judge access</h2>
+    <% if (query && query.ok === 'pin') { %><div class="flash ok">PIN updated. Give it to the judge privately.</div><% } %>
+    <% if (query && query.ok === 'cleared') { %><div class="flash warn">PIN cleared. That judge can no longer sign in.</div><% } %>
+    <% if (query && query.err === 'pinformat') { %><div class="flash err">PIN must be exactly 4 digits.</div><% } %>
+    <table class="judge-table">
+      <tr><th>Judge</th><th>Link</th><th>Status</th><th>Set or rotate PIN</th><th></th></tr>
+      <% judges.forEach(function(j){ %>
+        <tr>
+          <td><%= j.label %></td>
+          <td><a href="/judge/<%= j.id %>" target="_blank">/judge/<%= j.id %></a></td>
+          <td><%= j.code ? 'PIN set' : 'no PIN (locked out)' %></td>
+          <td>
+            <form action="/admin/judges/<%= j.id %>/pin" method="POST" class="inline">
+              <input type="text" name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="1234" required />
+              <button type="submit"><%= j.code ? 'Rotate' : 'Set' %></button>
+            </form>
+          </td>
+          <td>
+            <% if (j.code) { %>
+              <form action="/admin/judges/<%= j.id %>/clear-pin" method="POST" class="inline" onsubmit="return confirm('Clear the PIN for <%= j.label %>? They will not be able to sign in until you set a new one.')">
+                <button type="submit">Clear</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </table>
   </div>
 
   <div class="table-wrap">

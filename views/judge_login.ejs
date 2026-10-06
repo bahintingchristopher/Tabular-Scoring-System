@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Judge Login</title>
+  <link rel="stylesheet" href="/css/judge.css" />
+</head>
+<body>
+  <div class="judge-wrap">
+    <header class="judge-header">
+      <h2><%= judge.label %></h2>
+      <div class="locked-note" id="locked-note" style="<%= settings.scores_locked==='1' ? '' : 'display:none' %>">Scoring is locked</div>
+    </header>
+
+    <main class="login-card">
+      <p class="login-prompt">Enter your PIN</p>
+
+      <form action="/judge/<%= judge.id %>/login" method="POST" id="pin-form" autocomplete="off">
+        <input type="hidden" name="pin" id="pin-input" value="" />
+
+        <div class="pin-dots" id="pin-dots" aria-label="PIN entry">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <% if (error) { %>
+          <div class="login-error" id="login-error"><%= error %></div>
+        <% } %>
+
+        <div class="keypad">
+          <button type="button" class="key" data-key="1">1</button>
+          <button type="button" class="key" data-key="2">2</button>
+          <button type="button" class="key" data-key="3">3</button>
+          <button type="button" class="key" data-key="4">4</button>
+          <button type="button" class="key" data-key="5">5</button>
+          <button type="button" class="key" data-key="6">6</button>
+          <button type="button" class="key" data-key="7">7</button>
+          <button type="button" class="key" data-key="8">8</button>
+          <button type="button" class="key" data-key="9">9</button>
+          <button type="button" class="key key-alt" data-action="clear">C</button>
+          <button type="button" class="key" data-key="0">0</button>
+          <button type="button" class="key key-alt" data-action="back">&#9003;</button>
+        </div>
+
+        <noscript>
+          <div class="login-error">JavaScript is required for the keypad.</div>
+        </noscript>
+      </form>
+    </main>
+  </div>
+
+  <script src="/js/judge_login.js"></script>
+</body>
+</html>

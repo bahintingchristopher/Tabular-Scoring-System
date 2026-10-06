@@ -25,3 +25,16 @@ body { font-family: Arial, Helvetica, sans-serif; background: #111; color: #eee;
 .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .locked-msg { color: #ff8080; font-size: 16px; }
 .back a { color: #8ab4f8; text-decoration: none; }
+
+/* ---- Judge PIN login ---- */
+.login-card { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 16px 12px 12px; }
+.login-prompt { text-align: center; font-size: 16px; color: #ccc; margin-bottom: 14px; }
+.pin-dots { display: flex; justify-content: center; gap: 14px; margin-bottom: 16px; }
+.dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #555; background: #222; transition: background .1s, border-color .1s; }
+.dot.filled { background: #eee; border-color: #eee; }
+.login-error { background: #3b1f1f; border: 1px solid #b86a6a; color: #ffd6d6; border-radius: 6px; padding: 10px; font-size: 14px; text-align: center; margin-bottom: 14px; }
+.keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.key { padding: 18px 0; font-size: 26px; background: #222; color: #eee; border: 2px solid #444; border-radius: 10px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.key:active { background: #333; }
+.key-alt { background: #1a1a1a; color: #999; font-size: 20px; }
+#pin-form.submitting .key { opacity: .4; pointer-events: none; }

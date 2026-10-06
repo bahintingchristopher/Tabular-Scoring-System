@@ -1,13 +1,14 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 const { mapChoiceToValue } = require('../utils/adMap');
+const { hashPin, isValidPin } = require('../utils/pin');
 const { buildState } = require('../utils/state');
 
 router.get('/', async (req, res) => {
   try {
     const { contestants, judges, settings } = await buildState();
-    res.render('admin_dashboard', { contestants, judges, settings });
+    res.render('admin_dashboard', { contestants, judges, settings, query: req.query });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error loading admin');
@@ -138,6 +139,35 @@ router.post('/reset-event', async (req, res) => {
     const io = req.app.get('io');
     if (io) io.emit('score_updated', await buildState());
     res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+
+router.post('/judges/:judgeId/pin', async (req, res) => {
+  try {
+    const judgeId = parseInt(req.params.judgeId);
+    if (isNaN(judgeId)) return res.redirect('/admin');
+    const pin = (req.body && req.body.pin) || ''.trim();
+    if (!isValidPin(pin)) return res.redirect('/admin?err=pinformat');
+    const stored = hashPin(pin);
+    const [result] = await pool.query('UPDATE judges SET code=? WHERE id=?', [stored, judgeId]);
+    if (result.affectedRows === 0) return res.redirect('/admin?err=nojudge');
+    res.redirect('/admin?ok=pin');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+router.post('/judges/:judgeId/clear-pin', async (req, res) => {
+  try {
+    const judgeId = parseInt(req.params.judgeId);
+    if (isNaN(judgeId)) return res.redirect('/admin');
+    await pool.query('UPDATE judges SET code=NULL WHERE id=?', [judgeId]);
+    res.redirect('/admin?ok=cleared');
   } catch (err) {
     console.error(err);
     res.redirect('/admin');

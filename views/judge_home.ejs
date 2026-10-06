@@ -11,6 +11,8 @@
     <header class="judge-header">
       <h1><%= judge.label %></h1>
       <div class="locked-note" id="locked-note" style="<%= settings.scores_locked==='1' ? '' : 'display:none' %>">Scoring is locked</div>
+      <div class="locked-note" id="locked-note" style="<%= settings.scores_locked==='1' ? '' : 'display:none' %>">Scoring is locked</div>
+      <form action="/judge/<%= judge.id %>/logout" method="POST" class="logout-form"><button type="submit" class="logout-btn">Sign out</button></form>
     </header>
 
     <main class="contestant-list">

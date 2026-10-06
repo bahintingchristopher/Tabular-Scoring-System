@@ -1,7 +1,8 @@
-﻿const express = require('express');
+const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
@@ -14,6 +15,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+if (!process.env.SESSION_SECRET) {
+  console.error('SESSION_SECRET is not set in .env');
+  process.exit(1);
+}
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 const adminRoutes = require('./routes/admin');
 const judgeRoutes = require('./routes/judge');

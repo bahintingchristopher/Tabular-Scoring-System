@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -11,6 +11,7 @@
     <header class="judge-header">
       <h2><%= judge.label %></h2>
       <div class="back"><a href="/judge/<%= judge.id %>">← Back to list</a></div>
+      <form action="/judge/<%= judge.id %>/logout" method="POST" class="logout-form"><button type="submit" class="logout-btn">Sign out</button></form>
       <div class="locked-note" id="locked-note" style="<%= settings.scores_locked==='1' ? '' : 'display:none' %>">Scoring is locked</div>
     </header>
 

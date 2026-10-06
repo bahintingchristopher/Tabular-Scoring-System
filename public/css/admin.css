@@ -15,3 +15,16 @@ button:hover { background: #3a3a3a; }
 .admin-table tbody tr:nth-child(even) { background: #181818; }
 .rename-form { display: flex; gap: 6px; justify-content: center; }
 .total, .avg { font-weight: bold; }
+
+/* ---- Admin: judge access panel ---- */
+.judge-access { margin: 16px 0; }
+.judge-access h2 { font-size: 18px; margin-bottom: 8px; }
+.judge-table { width: 100%; border-collapse: collapse; background: #e6e92d; }
+.judge-table th, .judge-table td { border: 1px solid #1511ef; color:#0a0a0a; padding: 6px 8px; text-align: left; }
+.judge-table input { width: 80px; padding: 4px; }
+.flash { padding: 8px 10px; border-radius: 4px; margin-bottom: 8px; font-size: 14px; }
+.flash.ok { background: #e6f5ea; border: 1px solid #2fb86a; color: #14532d; }
+.flash.warn { background: #fff6e0; border: 1px solid #d9a441; color: #6b4a06; }
+.flash.err { background: #fdeaea; border: 1px solid #c33; color: #7a1c1c; }
+.logout-form { display: inline; }
+.logout-btn { background: none; border: none; color: #8ab4f8; text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px; }

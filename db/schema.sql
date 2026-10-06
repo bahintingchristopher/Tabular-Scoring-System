@@ -1,4 +1,4 @@
-﻿-- Tabular Scorer Schema
+-- Tabular Scorer Schema
 -- Express + MySQL
 -- A-D scoring: A=100, B=95, C=90, D=85
 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS contestants (
 CREATE TABLE IF NOT EXISTS judges (
   id INT AUTO_INCREMENT PRIMARY KEY,
   label VARCHAR(50) NOT NULL,
-  code VARCHAR(20) NULL UNIQUE
+  code VARCHAR(255) NULL UNIQUE   -- scrypt PIN hash: "salt:hash", set by admin
 );
 
 -- Scores: store choice + numeric value
