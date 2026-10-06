@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -59,7 +59,7 @@
               </form>
             </td>
             <% judges.forEach((j)=>{ 
-                 const s = c.scores['judge'+j.id] || {choice:null, score_value:null};
+                 const s = c.scores[j.id] || {choice:null, score_value:null};
             %>
               <td data-judge="<%= j.id %>" data-contestant="<%= c.id %>">
                 <%= s.choice ? (s.choice + (s.score_value!==null ? ' ('+Number(s.score_value)+')' : '')) : '—' %>

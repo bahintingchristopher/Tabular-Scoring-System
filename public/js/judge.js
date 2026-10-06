@@ -1,4 +1,4 @@
-﻿const socket = io();
+const socket = io();
 
 socket.on('score_updated', () => {
   location.reload();
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // if already selected
   if (input && input.value) {
-    const sel = document.querySelector(.ad-box[data-choice='']);
+    const sel = document.querySelector(`.ad-box[data-choice="${input.value}"]`);
     if (sel) sel.classList.add('active');
     if (btn) btn.disabled = false;
   }

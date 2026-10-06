@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 const { buildState } = require('../utils/state');
@@ -26,7 +26,7 @@ router.get('/:judgeId/score/:contestantId', async (req, res) => {
     const judge = judges.find((j) => j.id === judgeId);
     const contestant = contestants.find((c) => c.id === contestantId);
     if (!judge || !contestant) return res.status(404).send('Not found');
-    const myScore = contestant.scores[judge] || { choice: null };
+    const myScore = contestant.scores[judgeId] || { choice: null };
     res.render('judge_scoring', { judge, contestant, myScore, settings });
   } catch (err) {
     console.error(err);

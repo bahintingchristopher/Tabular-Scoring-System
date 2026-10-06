@@ -1,4 +1,4 @@
-﻿const pool = require('../config/db');
+const pool = require('../config/db');
 
 async function getSettings() {
   const [rows] = await pool.query('SELECT setting_key, setting_value FROM event_settings');
@@ -27,14 +27,14 @@ async function buildState() {
     const jScores = {};
     for (const j of judges) {
       const k = `${c.id}:${j.id}`;
-      jScores[judge] = scoreMap[k] || { choice: null, score_value: null };
+      jScores[j.id] = scoreMap[k] || { choice: null, score_value: null };
     }
 
     // totals
     let total = 0;
     let submittedCount = 0;
     for (const j of judges) {
-      const sv = jScores[judge].score_value;
+      const sv = jScores[j.id].score_value;
       if (sv !== null && !isNaN(sv)) {
         total += Number(sv);
         submittedCount += 1;

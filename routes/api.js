@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 const { mapChoiceToValue } = require('../utils/adMap');
@@ -29,7 +29,7 @@ router.post('/judge/submit-score', async (req, res) => {
     }
     const io = req.app.get('io');
     if (io) io.emit('score_updated', await buildState());
-    res.redirect(/judge/);
+    res.redirect(`/judge/${j}`);
   } catch (err) {
     console.error(err);
     res.redirect('back');

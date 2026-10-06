@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -15,7 +15,7 @@
 
     <main class="contestant-list">
       <% contestants.forEach((c, idx)=>{ 
-           const my = c.scores['judge'+judge.id] || {choice:null};
+           const my = c.scores[judge.id] || {choice:null};
       %>
         <a class="contestant-item" href="/judge/<%= judge.id %>/score/<%= c.id %>">
           <div class="ci-num"><%= idx+1 %></div>
