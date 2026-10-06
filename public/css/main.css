@@ -1,18 +1,122 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; background: #111; color: #eee; font-family: Arial, Helvetica, sans-serif; }
-body { position: relative; }
-.banner { padding: 8px 0; background: #7a1c1c; color: #ffd6d6; text-align: center; font-size: clamp(14px,2.2vmin,24px); font-weight: bold; letter-spacing: 2px; border-bottom: 1px solid #b86a6a; text-transform: uppercase; z-index: 5; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: #111;
+  color: #eee;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner {
+  flex: 0 0 auto;
+  padding: 8px 0;
+  background: #7a1c1c;
+  color: #ffd6d6;
+  text-align: center;
+  font-size: clamp(14px, 2.2vmin, 24px);
+  font-weight: bold;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #b86a6a;
+  text-transform: uppercase;
+  z-index: 5;
+}
 .banner.hidden { display: none; }
-.list { position: absolute; top: 10px; left: 10px; padding: 10px 16px; font-size: clamp(16px,2.4vmin,30px); line-height: 1.8; max-width: 40vw; z-index: 4; background: rgba(0,0,0,0.4); border: 1px solid #333; border-radius: 8px; }
+
+/* two-column shell: list | stage */
+.main-screen {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+/* LEFT column */
+.contestants-panel {
+  flex: 0 0 clamp(240px, 26vw, 420px);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(14px, 1.6vw, 28px);
+  background: rgba(0, 0, 0, 0.55);
+  border-right: 1px solid #333;
+  overflow: hidden;
+}
+.panel-title {
+  flex: 0 0 auto;
+  font-size: clamp(13px, 1.5vmin, 20px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #7fb9a0;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #333;
+}
+.list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  font-size: clamp(17px, 2.4vmin, 30px);
+  line-height: 1.9;
+}
 .list-item { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .list-item .name { font-weight: normal; }
 .list-item.current .name { font-weight: 800; color: #d6ffea; }
-.list-item.done .name { opacity: 0.5; text-decoration: line-through; }
-.current { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; text-align: center; padding: 2vmin; }
-.box-name { font-size: clamp(40px,8vmin,96px); font-weight: 700; margin-bottom: clamp(10px,3vmin,30px); text-shadow: 0 2px 6px rgba(0,0,0,0.45); }
-.current-name { display: none; }
-.score-box { width: min(80vw,60vh); aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 3px solid #2fb86a; background: #1f4d2e; border-radius: clamp(12px,3vmin,20px); margin-bottom: clamp(20px,6vmin,60px); }
-.score { font-size: clamp(120px,20vmin,280px); font-weight: 900; line-height: .95; }
-.judges-count { font-size: clamp(18px,4vmin,40px); margin-top: clamp(8px,2vmin,20px); color: #d6ffea; }
-.next-btn { padding: clamp(20px,4vmin,60px) clamp(40px,8vmin,120px); font-size: clamp(28px,6vmin,72px); font-weight: bold; border: 3px solid #444; background: #2a2a2a; color: #eee; border-radius: clamp(12px,3vmin,20px); cursor: pointer; }
+
+/* RIGHT column: name -> score box -> NEXT */
+.stage {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 3vmin, 36px);
+  padding: clamp(16px, 3vmin, 48px);
+}
+.box-name {
+  font-size: clamp(44px, 9vmin, 110px);
+  font-weight: 900;
+  line-height: 1.05;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.score-box {
+  width: min(74%, 54vh);
+  max-width: 900px;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #2fb86a;
+  background: #1f4d2e;
+  border-radius: clamp(12px, 3vmin, 20px);
+}
+.score {
+  font-size: clamp(84px, 16vmin, 230px);
+  font-weight: 900;
+  line-height: 0.95;
+}
+.judges-count {
+  font-size: clamp(16px, 3vmin, 34px);
+  margin-top: clamp(6px, 1.5vmin, 16px);
+  color: #d6ffea;
+}
+.next-btn {
+  flex: 0 0 auto;
+  padding: clamp(16px, 2.6vmin, 44px) clamp(36px, 7vmin, 104px);
+  font-size: clamp(26px, 5vmin, 62px);
+  font-weight: bold;
+  border: 3px solid #444;
+  background: #2a2a2a;
+  color: #eee;
+  border-radius: clamp(12px, 3vmin, 20px);
+  cursor: pointer;
+}
 .next-btn:hover { background: #3a3a3a; }

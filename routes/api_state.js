@@ -2,21 +2,19 @@
 const express = require('express');
 const router = express.Router();
 const { buildState } = require('../utils/state');
+const mainState = require('../utils/mainState');
 
-// Import or reference shared state index
-// If your app uses state from routes/main.js, keep index sync here
 router.get('/state', async (req, res) => {
   try {
     const { contestants, judges, settings } = await buildState();
-    
-    // Retrieve global currentIndex if attached to app, or default to 0
-    const currentIndex = req.app.get('currentIndex') || 0;
-    const done = req.app.get('doneContestants') || [];
+    const { currentIndex, history } = mainState.get();
+    const total = contestants.length;
+    const idx = total === 0 ? 0 : (currentIndex % total);
 
     res.json({
       contestants,
-      currentIndex,
-      done,
+      currentIndex: idx,
+      done: history.map((h) => h.id),
       judgesCount: judges.length,
       scores_locked: settings.scores_locked || '0'
     });

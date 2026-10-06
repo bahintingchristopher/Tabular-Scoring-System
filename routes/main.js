@@ -1,19 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { buildState } = require('../utils/state');
-
-// Maintain server-side active index and evaluation history
-const state = {
-  currentIndex: 0,
-  history: []
-};
+const mainState = require('../utils/mainState');
 
 // Endpoint to fetch current dynamic state as JSON
 router.get('/state', async (req, res) => {
   try {
     const { contestants, judges } = await buildState();
     const total = contestants.length;
-    const currentIndex = total === 0 ? 0 : (state.currentIndex % total);
+    const currentIndex = total === 0 ? 0 : (mainState.get().currentIndex % total);
 
     res.json({
       contestants,
@@ -30,17 +25,18 @@ router.get('/state', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const { contestants, judges, settings } = await buildState();
+    const { currentIndex, history } = mainState.get();
     const total = contestants.length;
-    const currentIndex = total === 0 ? 0 : (state.currentIndex % total);
-    const current = currentIndex >= 0 ? contestants[currentIndex] : null;
+    const idx = total === 0 ? 0 : (currentIndex % total);
+    const current = idx >= 0 ? contestants[idx] : null;
 
     res.render('main_screen', {
       contestants,
       judges,
       settings,
       current,
-      currentIndex,
-      history: state.history.slice(),
+      currentIndex: idx,
+      history: history.slice(),
       total
     });
   } catch (err) {
@@ -54,25 +50,10 @@ router.post('/next', async (req, res) => {
   try {
     const { contestants, judges } = await buildState();
     const total = contestants.length;
+    const { currentIndex } = mainState.get();
+    const prev = total > 0 ? contestants[currentIndex % total] : null;
 
-    if (total > 0) {
-      const prevIndex = state.currentIndex % total;
-      const prev = contestants[prevIndex];
-
-      state.history.push({
-        id: prev.id,
-        name: prev.name,
-        total: Number(prev.total || 0),
-        submittedCount: Number(prev.submittedCount || 0),
-        judgesCount: judges.length
-      });
-
-      // Loop to next index
-      state.currentIndex = (state.currentIndex + 1) % total;
-    } else {
-      state.history = [];
-      state.currentIndex = 0;
-    }
+    const nextIndex = mainState.advance(total, prev, judges.length);
 
     // Broadcast state update event across all connected clients
     const io = req.app.get('io');
@@ -80,7 +61,7 @@ router.post('/next', async (req, res) => {
       io.emit('state_changed');
     }
 
-    res.json({ success: true, currentIndex: state.currentIndex });
+    res.json({ success: true, currentIndex: nextIndex });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false });

@@ -4,26 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Main Screen</title>
-  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/main.css?v=<%= Date.now() %>" />
 </head>
 <body data-judges="<%= judges.length %>">
   <div id="locked-banner" class="banner <%= settings.scores_locked === '1' ? '' : 'hidden' %>">SCORING LOCKED</div>
-  <div id="list" class="list">
-    <% contestants.forEach(function (c, i) { %>
-      <div class="list-item" data-id="<%= c.id %>">
-        <span class="name"><%= c.name %></span>
+
+  <div class="main-screen">
+    <aside class="contestants-panel">
+      <div class="panel-title">Contestants</div>
+      <div id="list" class="list">
+        <% contestants.forEach(function (c, i) { %>
+          <div class="list-item <%= i === currentIndex ? 'current' : '' %>" data-id="<%= c.id %>">
+            <span class="name"><%= c.name %><%= c.submittedCount > 0 ? ' - ' + c.avg.toFixed(2) : '' %></span>
+          </div>
+        <% }) %>
       </div>
-    <% }) %>
+    </aside>
+
+    <section class="stage">
+      <div class="box-name" id="box-name"><%= current ? current.name : '--' %></div>
+      <div class="score-box" id="score-box">
+        <div class="score" id="current-score"><%= current && current.submittedCount > 0 ? current.avg.toFixed(2) : '--' %></div>
+        <div class="judges-count" id="current-count"><%= current ? current.submittedCount : 0 %>/<%= judges.length %> judges</div>
+      </div>
+      <button class="next-btn" id="next-btn" type="button">NEXT</button>
+    </section>
   </div>
-  <div class="current">
-    <div class="box-name" id="box-name"><%= current ? current.name : '--' %></div>
-    <div class="score-box" id="score-box">
-      <div class="score" id="current-score">--</div>
-      <div class="judges-count" id="current-count">0/<%= judges.length %> judges</div>
-    </div>
-    <button class="next-btn" id="next-btn" type="button">NEXT</button>
-  </div>
+
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/main.js"></script>
+  <script src="/js/main.js?v=<%= Date.now() %>"></script>
 </body>
 </html>

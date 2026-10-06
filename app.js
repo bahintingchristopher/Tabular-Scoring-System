@@ -30,6 +30,7 @@ const mainRoutes = require('./routes/main');
 
 app.use('/admin', adminRoutes);
 app.use('/judge', judgeRoutes);
+app.use('/api', stateApi);
 app.use('/api', apiRoutes);
 app.use('/main', mainRoutes);
 
@@ -45,4 +46,3 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log('Tabular Scorer running on http://localhost:' + PORT);
 });
-app.use('/api', stateApi);
