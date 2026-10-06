@@ -1,6 +1,7 @@
 (function () {
   const boxName = document.getElementById('box-name');
   const currentScore = document.getElementById('current-score');
+  const scoreBreakdown = document.getElementById('score-breakdown');
   const currentCount = document.getElementById('current-count');
   const listDiv = document.getElementById('list');
   const banner = document.getElementById('locked-banner');
@@ -10,17 +11,33 @@
   let currentIndex = 0;
   let judges = Number(document.body.dataset.judges || '0');
 
+  function hasAnyScore(c) {
+    return !!c && (Number(c.submittedCount || 0) > 0 || Number(c.audienceVotes || 0) > 0);
+  }
+
   function formatScore(c) {
+    if (!hasAnyScore(c)) return '--';
+    return Number(c.finalScore || 0).toFixed(2);
+  }
+
+  function breakdownText(c) {
     if (!c) return '--';
-    if (Number(c.submittedCount || 0) === 0) return '--';
-    return Number(c.avg || 0).toFixed(2);
+    const submitted = Number(c.submittedCount || 0);
+    const votes = Number(c.audienceVotes || 0);
+    if (submitted > 0) {
+      return 'Judges ' + Number(c.avg || 0).toFixed(2) + ' x 0.80 = ' +
+        Number(c.judgesWeighted || 0).toFixed(2) + ' + Audience ' +
+        Number(c.audienceImpact || 0).toFixed(2);
+    }
+    if (votes > 0) return 'Judges -- + Audience ' + Number(c.audienceImpact || 0).toFixed(2);
+    return '--';
   }
 
   function listLabel(c) {
     if (!c) return '';
     const name = c.name || '';
-    if (Number(c.submittedCount || 0) === 0) return name;
-    return name + ' - ' + Number(c.avg || 0).toFixed(2);
+    if (!hasAnyScore(c)) return name;
+    return name + ' - ' + Number(c.finalScore || 0).toFixed(2);
   }
 
   function currentContestant() {
@@ -32,6 +49,7 @@
     const c = currentContestant();
     if (boxName) boxName.textContent = c ? (c.name || '--') : '--';
     if (currentScore) currentScore.textContent = formatScore(c);
+    if (scoreBreakdown) scoreBreakdown.textContent = breakdownText(c);
     if (currentCount) {
       const submitted = c ? Number(c.submittedCount || 0) : 0;
       currentCount.textContent = submitted + '/' + judges + ' judges';
@@ -56,9 +74,8 @@
       const newItems = listDiv.querySelectorAll('.list-item');
       for (let i = 0; i < newItems.length; i++) {
         newItems[i].classList.toggle('current', i === currentIndex);
-        const c = contestants[i];
         const nameEl = newItems[i].querySelector('.name');
-        if (nameEl) nameEl.textContent = listLabel(c);
+        if (nameEl) nameEl.textContent = listLabel(contestants[i]);
       }
     } catch (err) {
       console.error('Failed to render contestant list:', err);

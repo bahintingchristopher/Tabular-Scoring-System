@@ -15,7 +15,7 @@
       <div id="list" class="list">
         <% contestants.forEach(function (c, i) { %>
           <div class="list-item <%= i === currentIndex ? 'current' : '' %>" data-id="<%= c.id %>">
-            <span class="name"><%= c.name %><%= c.submittedCount > 0 ? ' - ' + c.avg.toFixed(2) : '' %></span>
+            <span class="name"><%= c.name %><%= (c.submittedCount > 0 || c.audienceVotes > 0) ? ' - ' + c.finalScore.toFixed(2) : '' %></span>
           </div>
         <% }) %>
       </div>
@@ -24,7 +24,16 @@
     <section class="stage">
       <div class="box-name" id="box-name"><%= current ? current.name : '--' %></div>
       <div class="score-box" id="score-box">
-        <div class="score" id="current-score"><%= current && current.submittedCount > 0 ? current.avg.toFixed(2) : '--' %></div>
+        <div class="score" id="current-score"><%= current && (current.submittedCount > 0 || current.audienceVotes > 0) ? current.finalScore.toFixed(2) : '--' %></div>
+        <div class="score-breakdown" id="score-breakdown"><%
+          if (current && current.submittedCount > 0) {
+            %>Judges <%= current.avg.toFixed(2) %> x 0.80 = <%= current.judgesWeighted.toFixed(2) %> + Audience <%= current.audienceImpact.toFixed(2) %><%
+          } else if (current && current.audienceVotes > 0) {
+            %>Judges -- + Audience <%= current.audienceImpact.toFixed(2) %><%
+          } else {
+            %>--<%
+          }
+        %></div>
         <div class="judges-count" id="current-count"><%= current ? current.submittedCount : 0 %>/<%= judges.length %> judges</div>
       </div>
       <button class="next-btn" id="next-btn" type="button">NEXT</button>

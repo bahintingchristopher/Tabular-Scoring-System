@@ -8,7 +8,7 @@ const { buildState } = require('../utils/state');
 router.get('/', async (req, res) => {
   try {
     const { contestants, judges, settings } = await buildState();
-    res.render('admin_dashboard', { contestants, judges, settings, query: req.query });
+    res.render('admin_dashboard', { contestants, judges, settings, query: req.query, voteUrl: req.protocol + '://' + req.get('host') + '/vote' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error loading admin');
@@ -168,6 +168,18 @@ router.post('/judges/:judgeId/clear-pin', async (req, res) => {
     if (isNaN(judgeId)) return res.redirect('/admin');
     await pool.query('UPDATE judges SET code=NULL WHERE id=?', [judgeId]);
     res.redirect('/admin?ok=cleared');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+router.post('/reset-votes', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM audience_votes');
+    const io = req.app.get('io');
+    if (io) io.emit('score_updated', await buildState());
+    res.redirect('/admin');
   } catch (err) {
     console.error(err);
     res.redirect('/admin');

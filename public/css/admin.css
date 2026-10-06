@@ -32,3 +32,12 @@ button:hover { background: #3a3a3a; }
 .admin-header-top h1 { margin-bottom: 0; }
 .main-screen-link { display: inline-block; padding: 12px 24px; border: 2px solid #2fb86a; border-radius: 6px; background: #1f4d2e; color: #d6ffea; font-size: 22px; font-weight: bold; text-decoration: none; letter-spacing: 1px; white-space: nowrap; }
 .main-screen-link:hover { background: #2a6b3f; }
+
+.header-links { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.vote-screen-link { display: inline-block; padding: 12px 24px; border: 2px solid #4a90d9; border-radius: 6px; background: #1f3a5a; color: #d6e8ff; font-size: 22px; font-weight: bold; text-decoration: none; letter-spacing: 1px; white-space: nowrap; }
+.vote-screen-link:hover { background: #2a5b8a; }
+.vote-url { color: #ccc; font-size: 14px; margin-bottom: 12px; word-break: break-all; }
+.vote-url a { color: #8ab4f8; }
+.admin-table td.votes { font-weight: bold; }
+.admin-table td.audience { font-weight: bold; color: #d6ffea; }
+.admin-table td.final { font-weight: 900; font-size: 30px; background: #1f4d2e; color: #d6ffea; }

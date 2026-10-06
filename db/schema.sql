@@ -38,6 +38,18 @@ CREATE TABLE IF NOT EXISTS scores (
   INDEX idx_judge (judge_id)
 );
 
+-- Audience votes: one ballot per device (anonymous device token)
+CREATE TABLE IF NOT EXISTS audience_votes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  device_token CHAR(64) NOT NULL,
+  contestant_id INT NOT NULL,
+  voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_device (device_token),
+  CONSTRAINT fk_av_contestant FOREIGN KEY (contestant_id) REFERENCES contestants(id) ON DELETE CASCADE,
+  INDEX idx_contestant (contestant_id)
+);
+
 -- Event settings
 CREATE TABLE IF NOT EXISTS event_settings (
   setting_key VARCHAR(50) PRIMARY KEY,

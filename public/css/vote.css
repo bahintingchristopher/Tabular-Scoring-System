@@ -1,0 +1,77 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111;
+  color: #eee;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vote-wrap { max-width: 480px; margin: 0 auto; padding: 14px 12px 24px; }
+
+.vote-header { margin-bottom: 14px; }
+.vote-header h1 { font-size: 26px; margin-bottom: 4px; }
+.vote-sub { color: #aaa; font-size: 15px; }
+.locked-note { color: #ff8080; font-size: 15px; font-weight: bold; margin-top: 6px; }
+
+.banner {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.banner.ok { background: #1f4d2e; border: 1px solid #2fb86a; color: #d6ffea; }
+.banner.err { background: #3b1f1f; border: 1px solid #b86a6a; color: #ffd6d6; }
+
+.vote-list { display: flex; flex-direction: column; gap: 10px; }
+
+.vote-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 10px;
+  color: #eee;
+  font-size: 20px;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.vote-btn:active { background: #242424; }
+.vote-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.v-num {
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 50%;
+  font-size: 15px;
+  color: #ccc;
+}
+.v-name { flex: 1; font-weight: bold; }
+.v-mark {
+  display: none;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #1f4d2e;
+  border: 1px solid #2fb86a;
+  color: #d6ffea;
+  white-space: nowrap;
+}
+
+.vote-form.voted .vote-btn { border-color: #2fb86a; background: #1f4d2e; }
+.vote-form.voted .v-num { background: #2fb86a; border-color: #2fb86a; color: #111; }
+.vote-form.voted .v-mark { display: inline-block; }
+
+.vote-foot { margin-top: 16px; color: #777; font-size: 13px; text-align: center; line-height: 1.5; }

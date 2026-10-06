@@ -1,8 +1,13 @@
 <!DOCTYPE html> <html lang="en"> <head>   <meta charset="UTF-8" />   <meta name="viewport" content="width=device-width, initial-scale=1.0" />   <title>Admin - Tabular Scoring</title>   <link rel="stylesheet" href="/css/admin.css" /> </head> <body>   <div class="admin-header">
     <div class="admin-header-top">
       <h1>Admin Dashboard - Tabular Scoring System</h1>
-      <a href="/main" target="_blank" class="main-screen-link">MAIN SCREEN</a>
+      <div class="header-links">
+        <a href="/vote" target="_blank" class="vote-screen-link">VOTE LINK</a>
+        <a href="/main" target="_blank" class="main-screen-link">MAIN SCREEN</a>
+      </div>
     </div>
+    <% const vu = (typeof voteUrl !== 'undefined' && voteUrl) ? voteUrl : '/vote'; %>
+    <div class="vote-url">Audience link: <a href="<%= vu %>" target="_blank"><%= vu %></a></div>
     <div class="admin-controls">
       <form action="/admin/contestants/add" method="POST" class="inline">
         <input type="text" name="name" placeholder="Contestant name" required />
@@ -19,6 +24,9 @@
       </form>
       <form action="/admin/reset-event" method="POST" class="inline" onsubmit="return confirm('Clear scores only? Keep contestants?')">
         <button type="submit">Clear Scores (Keep Contestants)</button>
+      </form>
+      <form action="/admin/reset-votes" method="POST" class="inline" onsubmit="return confirm('Clear ALL audience votes?')">
+        <button type="submit">Clear Audience Votes</button>
       </form>
     </div>
     <div class="status">
@@ -67,6 +75,9 @@
           <% }) %>
           <th>Total</th>
           <th>Avg</th>
+          <th>Votes</th>
+          <th>Audience</th>
+          <th>Final</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -91,6 +102,9 @@
             <% }) %>
             <td class="total"><%= c.total %></td>
             <td class="avg"><%= c.avg.toFixed(2) %></td>
+            <td class="votes"><%= c.audienceVotes %></td>
+            <td class="audience"><%= c.audienceImpact.toFixed(2) %></td>
+            <td class="final"><%= c.finalScore.toFixed(2) %></td>
             <td class="status-cell"><%= c.submittedCount >= judges.length ? 'Complete' : (c.submittedCount>0 ? 'In-Progress' : 'Pending') %></td>
             <td>
               <form action="/admin/contestants/remove" method="POST" class="inline" onsubmit="return confirm('Remove this contestant?')">

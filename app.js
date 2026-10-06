@@ -27,12 +27,14 @@ const stateApi = require('./routes/api_state');
 const judgeRoutes = require('./routes/judge');
 const apiRoutes = require('./routes/api');
 const mainRoutes = require('./routes/main');
+const audienceRoutes = require('./routes/audience');
 
 app.use('/admin', adminRoutes);
 app.use('/judge', judgeRoutes);
 app.use('/api', stateApi);
 app.use('/api', apiRoutes);
 app.use('/main', mainRoutes);
+app.use('/vote', audienceRoutes);
 
 app.get('/', (req, res) => {
   res.redirect('/admin');

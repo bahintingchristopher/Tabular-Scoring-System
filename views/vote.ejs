@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Audience Vote</title>
+  <link rel="stylesheet" href="/css/vote.css?v=<%= Date.now() %>" />
+</head>
+<body>
+  <div class="vote-wrap">
+    <header class="vote-header">
+      <h1>Audience Vote</h1>
+      <p class="vote-sub">Tap the contestant you want to win</p>
+      <div class="locked-note" id="locked-note" style="<%= locked ? '' : 'display:none' %>">Voting is closed</div>
+    </header>
+
+    <% if (ok) { %>
+      <div class="banner ok" id="vote-ok">Your vote is recorded. Tap another contestant to change it.</div>
+    <% } else if (error) { %>
+      <div class="banner err"><%= error %></div>
+    <% } %>
+
+    <main class="vote-list" id="vote-list">
+      <% contestants.forEach(function (c, i) { %>
+        <form action="/vote" method="POST" class="vote-form <%= myVote === c.id ? 'voted' : '' %>">
+          <input type="hidden" name="contestantId" value="<%= c.id %>" />
+          <button type="submit" class="vote-btn" <%= locked ? 'disabled' : '' %> data-id="<%= c.id %>">
+            <span class="v-num"><%= i + 1 %></span>
+            <span class="v-name"><%= c.name %></span>
+            <span class="v-mark">Your pick</span>
+          </button>
+        </form>
+      <% }) %>
+    </main>
+
+    <footer class="vote-foot">One vote per phone. You can change your vote until voting closes.</footer>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/vote.js?v=<%= Date.now() %>"></script>
+</body>
+</html>
