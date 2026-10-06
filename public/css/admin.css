@@ -28,3 +28,7 @@ button:hover { background: #3a3a3a; }
 .flash.err { background: #fdeaea; border: 1px solid #c33; color: #7a1c1c; }
 .logout-form { display: inline; }
 .logout-btn { background: none; border: none; color: #8ab4f8; text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px; }
+.admin-header-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 12px; }
+.admin-header-top h1 { margin-bottom: 0; }
+.main-screen-link { display: inline-block; padding: 12px 24px; border: 2px solid #2fb86a; border-radius: 6px; background: #1f4d2e; color: #d6ffea; font-size: 22px; font-weight: bold; text-decoration: none; letter-spacing: 1px; white-space: nowrap; }
+.main-screen-link:hover { background: #2a6b3f; }

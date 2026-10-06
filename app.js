@@ -23,12 +23,15 @@ if (!process.env.SESSION_SECRET) {
 app.use(cookieParser(process.env.SESSION_SECRET));
 
 const adminRoutes = require('./routes/admin');
+const stateApi = require('./routes/api_state');
 const judgeRoutes = require('./routes/judge');
 const apiRoutes = require('./routes/api');
+const mainRoutes = require('./routes/main');
 
 app.use('/admin', adminRoutes);
 app.use('/judge', judgeRoutes);
 app.use('/api', apiRoutes);
+app.use('/main', mainRoutes);
 
 app.get('/', (req, res) => {
   res.redirect('/admin');
@@ -42,3 +45,4 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log('Tabular Scorer running on http://localhost:' + PORT);
 });
+app.use('/api', stateApi);
