@@ -1,5 +1,6 @@
 ﻿* { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: Arial, Helvetica, sans-serif; background: #111; color: #eee; }
+body {zoom: 95%;}
 .admin-header { padding: 16px 24px; background: #0a0a0a; border-bottom: 1px solid #333; }
 .admin-header h1 { font-size: 48px; margin-bottom: 12px; }
 .admin-controls { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -17,9 +18,13 @@ button:hover { background: #3a3a3a; }
 .total, .avg { font-weight: bold; }
 
 /* ---- Admin: judge access panel ---- */
-.judge-access { margin: 16px 0; }
-.judge-access h2 { font-size: 18px; margin-bottom: 8px; }
-.judge-table { width: 100%; border-collapse: collapse; background: #e6e92d; }
+.judge-access {
+  width: 98%;
+  margin: 0 auto;
+  text-align: left;
+}
+.judge-access h2 { font-size: 18px; margin-bottom: 8px;}
+.judge-table { width: 100%; border-collapse: collapse; background: #e6e92d; margin: 0 auto }
 .judge-table th, .judge-table td { border: 1px solid #1511ef; color:#0a0a0a; padding: 6px 8px; text-align: left; }
 .judge-table input { width: 80px; padding: 4px; }
 .flash { padding: 8px 10px; border-radius: 4px; margin-bottom: 8px; font-size: 14px; }
