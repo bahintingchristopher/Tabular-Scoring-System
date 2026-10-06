@@ -1,0 +1,27 @@
+﻿* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, Helvetica, sans-serif; background: #111; color: #eee; }
+.judge-wrap { max-width: 480px; margin: 0 auto; padding: 12px; }
+.judge-header { margin-bottom: 12px; }
+.judge-header h1, .judge-header h2 { font-size: 24px; margin-bottom: 6px; }
+.locked-note { color: #ff8080; font-size: 14px; }
+.contestant-list { display: flex; flex-direction: column; gap: 8px; }
+.contestant-item { display: flex; align-items: center; gap: 10px; padding: 12px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; text-decoration: none; color: #eee; }
+.ci-num { min-width: 24px; }
+.ci-name { flex: 1; font-size: 16px; }
+.ci-status { font-size: 12px; padding: 4px 8px; border-radius: 6px; border: 1px solid #444; }
+.ci-status.pending { background: #2a2a2a; color: #ccc; }
+.ci-status.submitted { background: #1f7a3e; color: #d6ffea; border-color: #2fb86a; }
+.scoring-card { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+.contestant-name { font-size: 20px; margin-bottom: 12px; }
+.ad-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; aspect-ratio: 1/1; }
+.ad-box { font-size: 28px; border-radius: 10px; border: 2px solid #444; background: #222; color: #eee; }
+.ad-box.a { background: #1f4d2e; border-color: #2fb86a; }
+.ad-box.b { background: #3b3f1f; border-color: #b8b86a; }
+.ad-box.c { background: #3f2f1f; border-color: #b88a6a; }
+.ad-box.d { background: #3f1f2f; border-color: #b86a8a; }
+.ad-box.active { box-shadow: 0 0 0 3px #fff inset; }
+.selected { margin-top: 10px; font-size: 16px; }
+.submit-btn { margin-top: 10px; width: 100%; padding: 14px; font-size: 18px; }
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.locked-msg { color: #ff8080; font-size: 16px; }
+.back a { color: #8ab4f8; text-decoration: none; }

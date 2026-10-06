@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Tabular Scoring</title>
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+  <div class="admin-header">
+    <h1>Admin Dashboard (Big Screen)</h1>
+    <div class="admin-controls">
+      <form action="/admin/contestants/add" method="POST" class="inline">
+        <input type="text" name="name" placeholder="Contestant name" required />
+        <button type="submit">Add Contestant</button>
+      </form>
+      <form action="/admin/lock" method="POST" class="inline">
+        <button type="submit">Lock Scores</button>
+      </form>
+      <form action="/admin/unlock" method="POST" class="inline">
+        <button type="submit">Unlock Scores</button>
+      </form>
+      <form action="/admin/reset-scores" method="POST" class="inline" onsubmit="return confirm('Reset ALL scores?')">
+        <button type="submit">Reset All Scores</button>
+      </form>
+      <form action="/admin/reset-event" method="POST" class="inline" onsubmit="return confirm('Clear scores only? Keep contestants?')">
+        <button type="submit">Clear Scores (Keep Contestants)</button>
+      </form>
+    </div>
+    <div class="status">
+      Locked: <span id="locked-status"><%= settings.scores_locked === '1' ? 'YES' : 'NO' %></span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="admin-table" id="admin-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Contestant</th>
+          <% judges.forEach((j)=>{ %>
+            <th><%= j.label %></th>
+          <% }) %>
+          <th>Total</th>
+          <th>Avg</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="admin-tbody">
+        <% contestants.forEach((c, idx)=>{ %>
+          <tr data-id="<%= c.id %>">
+            <td><%= idx + 1 %></td>
+            <td>
+              <form action="/admin/contestants/rename" method="POST" class="rename-form">
+                <input type="hidden" name="id" value="<%= c.id %>" />
+                <input type="text" name="name" value="<%= c.name %>" required />
+                <button type="submit" title="Rename (resets scores)">Save</button>
+              </form>
+            </td>
+            <% judges.forEach((j)=>{ 
+                 const s = c.scores['judge'+j.id] || {choice:null, score_value:null};
+            %>
+              <td data-judge="<%= j.id %>" data-contestant="<%= c.id %>">
+                <%= s.choice ? (s.choice + (s.score_value!==null ? ' ('+Number(s.score_value)+')' : '')) : '—' %>
+              </td>
+            <% }) %>
+            <td class="total"><%= c.total %></td>
+            <td class="avg"><%= c.avg.toFixed(2) %></td>
+            <td class="status-cell"><%= c.submittedCount >= judges.length ? 'Complete' : (c.submittedCount>0 ? 'In-Progress' : 'Pending') %></td>
+            <td>
+              <form action="/admin/contestants/remove" method="POST" class="inline" onsubmit="return confirm('Remove this contestant?')">
+                <input type="hidden" name="id" value="<%= c.id %>" />
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

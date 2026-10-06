@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Judge Scoring</title>
+  <link rel="stylesheet" href="/css/judge.css" />
+</head>
+<body>
+  <div class="judge-wrap">
+    <header class="judge-header">
+      <h2><%= judge.label %></h2>
+      <div class="back"><a href="/judge/<%= judge.id %>">← Back to list</a></div>
+      <div class="locked-note" id="locked-note" style="<%= settings.scores_locked==='1' ? '' : 'display:none' %>">Scoring is locked</div>
+    </header>
+
+    <main class="scoring-card">
+      <div class="contestant-name"><%= contestant.name %></div>
+
+      <% if (settings.scores_locked==='1') { %>
+        <div class="locked-msg">Scoring is locked. Cannot submit.</div>
+      <% } else { %>
+        <form action="/api/judge/submit-score" method="POST" class="ad-form">
+          <input type="hidden" name="judgeId" value="<%= judge.id %>" />
+          <input type="hidden" name="contestantId" value="<%= contestant.id %>" />
+          <input type="hidden" name="choice" id="choice-input" value="<%= myScore.choice || '' %>" />
+
+          <div class="ad-grid" role="group" aria-label="Select score A-D">
+            <button type="button" class="ad-box a" data-choice="A" aria-label="A - 100">A<br><span>100</span></button>
+            <button type="button" class="ad-box b" data-choice="B" aria-label="B - 95">B<br><span>95</span></button>
+            <button type="button" class="ad-box c" data-choice="C" aria-label="C - 90">C<br><span>90</span></button>
+            <button type="button" class="ad-box d" data-choice="D" aria-label="D - 85">D<br><span>85</span></button>
+          </div>
+
+          <div class="selected">Selected: <span id="selected-text"><%= myScore.choice || 'None' %></span></div>
+          <button type="submit" class="submit-btn" id="submit-btn" disabled>Submit Score</button>
+        </form>
+      <% } %>
+    </main>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/judge.js"></script>
+</body>
+</html>

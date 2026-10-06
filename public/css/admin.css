@@ -1,0 +1,17 @@
+﻿* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, Helvetica, sans-serif; background: #111; color: #eee; }
+.admin-header { padding: 16px 24px; background: #0a0a0a; border-bottom: 1px solid #333; }
+.admin-header h1 { font-size: 48px; margin-bottom: 12px; }
+.admin-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.inline { display: inline-flex; gap: 6px; }
+input[type='text'] { padding: 8px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #eee; }
+button { padding: 8px 12px; border-radius: 4px; border: 1px solid #444; background: #2a2a2a; color: #eee; cursor: pointer; }
+button:hover { background: #3a3a3a; }
+.status { margin-top: 8px; font-size: 20px; }
+.table-wrap { padding: 16px; overflow: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 28px; }
+.admin-table th, .admin-table td { border: 1px solid #333; padding: 10px 12px; text-align: center; }
+.admin-table thead th { position: sticky; top: 0; background: #222; z-index: 1; }
+.admin-table tbody tr:nth-child(even) { background: #181818; }
+.rename-form { display: flex; gap: 6px; justify-content: center; }
+.total, .avg { font-weight: bold; }

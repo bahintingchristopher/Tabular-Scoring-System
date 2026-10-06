@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Judge Home</title>
+  <link rel="stylesheet" href="/css/judge.css" />
+</head>
+<body>
+  <div class="judge-wrap">
+    <header class="judge-header">
+      <h1><%= judge.label %></h1>
+      <div class="locked-note" id="locked-note" style="<%= settings.scores_locked==='1' ? '' : 'display:none' %>">Scoring is locked</div>
+    </header>
+
+    <main class="contestant-list">
+      <% contestants.forEach((c, idx)=>{ 
+           const my = c.scores['judge'+judge.id] || {choice:null};
+      %>
+        <a class="contestant-item" href="/judge/<%= judge.id %>/score/<%= c.id %>">
+          <div class="ci-num"><%= idx+1 %></div>
+          <div class="ci-name"><%= c.name %></div>
+          <div class="ci-status <%= my.choice ? 'submitted' : 'pending' %>">
+            <%= my.choice ? 'Submitted' : 'Pending' %>
+          </div>
+        </a>
+      <% }) %>
+    </main>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/judge.js"></script>
+</body>
+</html>

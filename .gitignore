@@ -1,0 +1,55 @@
+﻿# ---- Secrets: NEVER commit ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+id_rsa*
+id_ed25519*
+*.keystore
+
+# ---- Dependencies ----
+node_modules/
+jspm_packages/
+web_modules/
+
+# ---- Logs ----
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.pid
+*.seed
+
+# ---- DB dumps / backups (these contain judge PINs + real scores) ----
+*.sql
+!db/schema.sql
+*.sql.gz
+dump*.sql
+backup*.sql
+*.dump
+
+# ---- Build / coverage ----
+dist/
+build/
+coverage/
+.nyc_output/
+
+# ---- OS / editor cruft ----
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
+
+# ---- Temp ----
+tmp/
+temp/
+*.tmp
+*.dmp
