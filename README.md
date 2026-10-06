@@ -47,8 +47,21 @@ contestant's scores.
 
 ```bash
 npm install
-cp .env.example .env      # then fill in DB_PASSWORD
 ```
+
+Create a `.env` file in the project root. It is git-ignored and is never
+committed:
+
+```
+PORT=3000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=tabular_score
+SESSION_SECRET=
+```
+
+At minimum set `DB_PASSWORD` to your MySQL password.
 
 Create the database and tables:
 
@@ -67,8 +80,8 @@ npm start                 # http://localhost:3000
 
 ## Configuration
 
-All secrets live in `.env`, which is **git-ignored**. `.env.example` is the
-committed template.
+All secrets live in `.env`, which is **git-ignored**. Create it using the
+block in [Setup](#setup) above; it is never committed.
 
 | Variable | Purpose |
 |---|---|
@@ -94,18 +107,22 @@ views/                 EJS templates
 public/                CSS and client-side JS
 ```
 
-## Known issues
+## Status
 
-This is the initial baseline commit. The app does **not** run yet:
+The app runs. `/admin`, `/judge/:judgeId` and `/judge/:judgeId/score/:contestantId`
+all render, and a submitted score round-trips through MySQL back to the admin
+table over Socket.IO.
 
-1. `utils/state.js` references an undeclared `judge` variable inside a loop over
-   `j`, throwing a `ReferenceError` on every page render.
-2. `public/js/judge.js` has a syntax error, so the whole client script fails to
-   parse and the judge UI is inert.
-3. Score objects are keyed inconsistently between the server and the templates,
-   so score cells never populate.
-4. The score-submit handler passes a regular-expression literal where a redirect
-   string is expected.
+Not yet built:
 
-Judge PIN authentication is not implemented; `/judge/1`, `/judge/2` and
-`/judge/3` are currently open to anyone who can reach the server.
+- **Judge PIN authentication.** `/judge/1`, `/judge/2` and `/judge/3` are open
+  to anyone who can reach the server.
+- **Contestant reordering.** A reorder endpoint exists in `routes/admin.js` but
+  nothing in the UI calls it.
+- **Flicker on the big screen.** `public/js/admin.js` reloads the whole page
+  on every score event, so the scoreboard flashes during scoring.
+- **Total column mid-event.** Totals are raw sums, so a contestant with one
+  judge scored looks comparable to one with all three. Per-judge columns and
+  the Status column distinguish them.
+- **`blind_scoring` is unused.** The setting exists in `event_settings` but
+  nothing reads it.
