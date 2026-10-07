@@ -10,6 +10,8 @@
   let contestants = [];
   let currentIndex = 0;
   let judges = Number(document.body.dataset.judges || '0');
+  let voteTimer = null;
+
 
   function hasAnyScore(c) {
     return !!c && (Number(c.submittedCount || 0) > 0 || Number(c.audienceVotes || 0) > 0);
@@ -37,7 +39,7 @@
     if (!c) return '';
     const name = c.name || '';
     if (!hasAnyScore(c)) return name;
-    return name + ' - ' + Number(c.finalScore || 0).toFixed(2);
+    return name;
   }
 
   function currentContestant() {
@@ -130,10 +132,113 @@
     });
   }
 
+  const audienceBtn = document.getElementById('audience-btn');
+  const revealBtn = document.getElementById('reveal-btn');
+  const stageMain = document.getElementById('stage-main');
+  const stageQr = document.getElementById('stage-qr');
+  const stageScores = document.getElementById('stage-scores');
+
+  function hideAll() {
+    if (stageMain) stageMain.classList.add('hidden');
+    if (stageQr) stageQr.classList.add('hidden');
+    if (stageScores) stageScores.classList.add('hidden');
+  }
+
+  if (audienceBtn && stageQr && stageMain) {
+    audienceBtn.addEventListener('click', function () {
+      const showQr = stageQr.classList.contains('hidden');
+      hideAll();
+      if (showQr) {
+        stageQr.classList.remove('hidden');
+        if (voteTimer) { voteTimer.stop(); voteTimer = null; }
+        voteTimer = startVoteTimer(300);
+      } else {
+        stageMain.classList.remove('hidden');
+        if (voteTimer) { voteTimer.stop(); voteTimer = null; }
+      }
+    });
+  }
+
+  if (revealBtn && stageScores && stageMain) {
+    revealBtn.addEventListener('click', function () {
+      const showScores = stageScores.classList.contains('hidden');
+      hideAll();
+      if (voteTimer) { voteTimer.stop(); voteTimer = null; }
+      if (showScores) {
+        stageScores.classList.remove('hidden');
+        try { triggerGotTalentReveal(); } catch (e) {}
+      } else {
+        stageMain.classList.remove('hidden');
+      }
+    });
+  }
+
+  // Enhanced Got Talent Pyrotechnic & Sparkler Reveal
+
+  function startVoteTimer(durationSec, onDone) {
+    const t = document.getElementById("vote-timer");
+    if (!t) return { stop: function(){} };
+    let remain = durationSec;
+    let iv;
+    function fmt(m,s){ return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0"); }
+    function tick(){
+      const m = Math.floor(remain/60); const sec = remain%60;
+      t.textContent = fmt(m,sec);
+      if (remain <= 10) t.classList.add("warn"); else t.classList.remove("warn");
+      remain--;
+      if (remain < 0){ clearInterval(iv); if (typeof onDone === "function") onDone(); }
+    }
+    t.classList.remove("hidden"); t.classList.remove("warn"); tick(); iv = setInterval(tick,1000);
+    return { stop: function(){ clearInterval(iv); t.classList.add("hidden"); } };
+  }
+  function triggerGotTalentReveal() {
+    if (typeof confetti !== 'function') return;
+    const colors = ['#FFD700', '#FFC857', '#FFF2CC', '#FFDF80'];
+    const end = Date.now() + 2500;
+
+    (function frame() {
+      confetti({
+        particleCount: 4,
+        angle: 60,
+        spread: 50,
+        origin: { x: 0, y: 0.9 },
+        colors: colors,
+        startVelocity: 70,
+        gravity: 0.9,
+        ticks: 180,
+        zIndex: 99999
+      });
+      confetti({
+        particleCount: 4,
+        angle: 120,
+        spread: 50,
+        origin: { x: 1, y: 0.9 },
+        colors: colors,
+        startVelocity: 70,
+        gravity: 0.9,
+        ticks: 180,
+        zIndex: 99999
+      });
+      confetti({
+        particleCount: 30,
+        angle: 90,
+        spread: 100,
+        origin: { x: 0.5, y: 1 },
+        colors: colors,
+        startVelocity: 40,
+        gravity: 0.6,
+        ticks: 200,
+        zIndex: 99999
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+  }
+
   // Poll first so realtime wiring can never block state loading.
   fetchState();
   setInterval(fetchState, 2000);
 
+  // Realtime updates via Socket.IO
   try {
     const socket = typeof window.io === 'function' ? window.io() : null;
     if (socket && typeof socket.on === 'function') {

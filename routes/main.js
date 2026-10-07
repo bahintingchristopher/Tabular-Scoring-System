@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { buildState } = require('../utils/state');
 const mainState = require('../utils/mainState');
+const QRCode = require('qrcode');
 
 // Endpoint to fetch current dynamic state as JSON
 router.get('/state', async (req, res) => {
@@ -11,9 +12,9 @@ router.get('/state', async (req, res) => {
     const currentIndex = total === 0 ? 0 : (mainState.get().currentIndex % total);
 
     res.json({
-      contestants,
-      currentIndex,
-      judgesCount: judges.length
+    contestants,
+    currentIndex,
+    judgesCount: judges.length
     });
   } catch (err) {
     console.error(err);
@@ -30,14 +31,24 @@ router.get('/', async (req, res) => {
     const idx = total === 0 ? 0 : (currentIndex % total);
     const current = idx >= 0 ? contestants[idx] : null;
 
+    const voteUrl = req.protocol + '://' + req.get('host') + '/vote';
+    const qrDataUrl = await QRCode.toDataURL(voteUrl, { width: 1000, margin: 2 });
+    const finalScores = contestants.map(c => ({
+    name: c.name,
+    finalScore: Number(c.finalScore || 0)
+    })).sort((a,b) => b.finalScore - a.finalScore);
+
     res.render('main_screen', {
-      contestants,
-      judges,
-      settings,
-      current,
-      currentIndex: idx,
-      history: history.slice(),
-      total
+    contestants,
+    judges,
+    settings,
+    current,
+    currentIndex: idx,
+    history: history.slice(),
+    total,
+    voteUrl,
+    qrDataUrl,
+    finalScores
     });
   } catch (err) {
     console.error(err);
@@ -58,7 +69,7 @@ router.post('/next', async (req, res) => {
     // Broadcast state update event across all connected clients
     const io = req.app.get('io');
     if (io) {
-      io.emit('state_changed');
+    io.emit('state_changed');
     }
 
     res.json({ success: true, currentIndex: nextIndex });

@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Main Screen</title>
   <link rel="stylesheet" href="/css/main.css?v=<%= Date.now() %>" />
+  <!-- Canvas Confetti CDN -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 <body data-judges="<%= judges.length %>">
   <div id="locked-banner" class="banner <%= settings.scores_locked === '1' ? '' : 'hidden' %>">SCORING LOCKED</div>
@@ -15,30 +17,57 @@
       <div id="list" class="list">
         <% contestants.forEach(function (c, i) { %>
           <div class="list-item <%= i === currentIndex ? 'current' : '' %>" data-id="<%= c.id %>">
-            <span class="name"><%= c.name %><%= (c.submittedCount > 0 || c.audienceVotes > 0) ? ' - ' + c.finalScore.toFixed(2) : '' %></span>
+            <span class="name"><%= c.name %></span>
           </div>
         <% }) %>
       </div>
+      <div id="vote-timer" class="vote-timer hidden">05:00</div>
+      <button class="reveal-btn" id="audience-btn" type="button">Audience voting</button>
+      <button class="reveal-btn" id="reveal-btn" type="button">Reveal Score</button>
     </aside>
 
     <section class="stage">
-      <div class="box-name" id="box-name"><%= current ? current.name : '--' %></div>
-      <div class="score-box" id="score-box">
-        <div class="score" id="current-score"><%= current && (current.submittedCount > 0 || current.audienceVotes > 0) ? current.finalScore.toFixed(2) : '--' %></div>
-        <div class="score-breakdown" id="score-breakdown"><%
-          if (current && current.submittedCount > 0) {
-            %>Judges <%= current.avg.toFixed(2) %> x 0.80 = <%= current.judgesWeighted.toFixed(2) %> + Audience <%= current.audienceImpact.toFixed(2) %><%
-          } else if (current && current.audienceVotes > 0) {
-            %>Judges -- + Audience <%= current.audienceImpact.toFixed(2) %><%
-          } else {
-            %>--<%
-          }
-        %></div>
-        <div class="judges-count" id="current-count"><%= current ? current.submittedCount : 0 %>/<%= judges.length %> judges</div>
+      <div id="stage-main">
+        <div class="stage-title">GEC - GOT TALENT</div>
+        <div class="box-name" id="box-name"><%= current ? current.name : '--' %></div>
+        <div class="score-box" id="score-box">
+          <div class="score-performer">Performer</div>
+        </div>
+        <button class="next-btn" id="next-btn" type="button">NEXT</button>
       </div>
-      <button class="next-btn" id="next-btn" type="button">NEXT</button>
-    </section>
-  </div>
+
+      <!-- STAGE SCORES (GEC-CEBU Got Talent Slanted Style) -->
+      <div id="stage-scores" class="hidden">
+        <div class="pgt-results-container">
+          <div class="pgt-header">
+            <div class="pgt-logo-sub">GEC-CEBU</div>
+            <div class="pgt-logo-main">GOT TALENT</div>
+            <h1 class="pgt-title">FINAL TALLY OF JUDGES SCORES AND AUDIENCE VOTES</h1>
+          </div>
+
+          <div class="pgt-tally-list">
+            <% finalScores.forEach(function(fs){ %>
+              <div class="pgt-row">
+                <div class="pgt-contestant-card">
+                  <div class="pgt-name"><%= fs.name %></div>
+                </div>
+                <div class="pgt-score-bar">
+                  <div class="pgt-score-bar-shade" style="width: <%= Math.max(0, Math.min(100, fs.finalScore)) %>%;"></div>
+                  <span class="pgt-score-text"><%= fs.finalScore.toFixed(1) %>%</span>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+
+      <div id="stage-qr" class="hidden">
+        <div class="qr-title">Scan to Vote</div>
+        <img class="qr-img" src="<%= qrDataUrl %>" alt="Vote QR code" />
+        <div class="qr-url"><%= voteUrl %></div>
+      </div>
+    </section> <!-- Closed <section class="stage"> -->
+  </div> <!-- Closed .main-screen -->
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/main.js?v=<%= Date.now() %>"></script>

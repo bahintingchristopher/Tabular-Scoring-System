@@ -12,7 +12,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #111; color: #eee;
 .ci-status.pending { background: #2a2a2a; color: #ccc; }
 .ci-status.submitted { background: #1f7a3e; color: #d6ffea; border-color: #2fb86a; }
 .scoring-card { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px; }
-.contestant-name { font-size: 20px; margin-bottom: 12px; }
+.contestant-name { font-size: 40px; margin-bottom: 12px; text-align: center; }
 .ad-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; aspect-ratio: 1/1; }
 .ad-box { font-size: 28px; border-radius: 10px; border: 2px solid #444; background: #222; color: #eee; }
 .ad-box.a { background: #1f4d2e; border-color: #2fb86a; }
@@ -38,3 +38,9 @@ body { font-family: Arial, Helvetica, sans-serif; background: #111; color: #eee;
 .key:active { background: #333; }
 .key-alt { background: #1a1a1a; color: #999; font-size: 20px; }
 #pin-form.submitting .key { opacity: .4; pointer-events: none; }
+
+/* ---- Judge scoring page header ---- */
+.scoring-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.scoring-header h2 { margin-bottom: 0; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.back { margin-top: 14px; text-align: center; }
