@@ -1,9 +1,10 @@
-<!DOCTYPE html> <html lang="en"> <head>   <meta charset="UTF-8" />   <meta name="viewport" content="width=device-width, initial-scale=1.0" />   <title>Admin - Tabular Scoring</title>   <link rel="stylesheet" href="/css/admin.css" /> </head> <body>   <div class="admin-header">
+﻿<!DOCTYPE html> <html lang="en"> <head>   <meta charset="UTF-8" />   <meta name="viewport" content="width=device-width, initial-scale=1.0" />   <title>Admin - Tabular Scoring</title>   <link rel="stylesheet" href="/css/admin.css" />   <link rel="stylesheet" href="/css/footer.css" /> </head> <body>   <div class="admin-header">
     <div class="admin-header-top">
       <h1>Admin Dashboard - Tabular Scoring System</h1>
       <div class="header-links">
         <a href="/vote" target="_blank" class="vote-screen-link">VOTE LINK</a>
         <a href="/main" target="_blank" class="main-screen-link">PROJECTOR SCREEN</a>
+        <form action="/admin/logout" method="POST" class="logout-form"><button type="submit" class="logout-btn">Logout</button></form>
       </div>
     </div>
     <% const vu = (typeof voteUrl !== 'undefined' && voteUrl) ? voteUrl : '/vote'; %>
@@ -97,7 +98,7 @@
                  const s = c.scores[j.id] || {choice:null, score_value:null};
             %>
               <td data-judge="<%= j.id %>" data-contestant="<%= c.id %>">
-                <%= s.choice ? (s.choice + (s.score_value!==null ? ' ('+Number(s.score_value)+')' : '')) : '—' %>
+                <%= s.choice ? (s.choice + (s.score_value!==null ? ' ('+Number(s.score_value)+')' : '')) : '-' %>
               </td>
             <% }) %>
             <td class="total"><%= c.total %></td>
@@ -120,5 +121,9 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/admin.js"></script>
+
+  <%- include('partials/footer') %>
 </body>
 </html>
+
+

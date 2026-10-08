@@ -1,14 +1,66 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 const { mapChoiceToValue } = require('../utils/adMap');
 const { hashPin, isValidPin } = require('../utils/pin');
 const { buildState } = require('../utils/state');
+const { publicVoteUrl } = require('../utils/publicUrl');
 
+const crypto = require('crypto');
+
+const AUTH_COOKIE = 'admin_auth';
+const AUTH_MAX_AGE = 12 * 60 * 60 * 1000;
+
+function hashCredential(input) {
+  return crypto.createHash('sha256').update(String(input)).digest();
+}
+
+function safeEqual(a, b) {
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+function isValidAdminLogin(username, password) {
+  const expectedUser = process.env.ADMIN_USER;
+  const expectedPass = process.env.ADMIN_PASSWORD;
+  if (!expectedUser || !expectedPass) return false;
+  return safeEqual(hashCredential(username), hashCredential(expectedUser)) &&
+         safeEqual(hashCredential(password), hashCredential(expectedPass));
+}
+
+function isAuthed(req) {
+  return !!(req.signedCookies && req.signedCookies[AUTH_COOKIE] === '1');
+}
+
+function requireAdmin(req, res, next) {
+  if (isAuthed(req)) return next();
+  return res.redirect('/admin/login');
+}
+
+router.get('/login', (req, res) => {
+  if (isAuthed(req)) return res.redirect('/admin');
+  return res.render('admin_login', { error: req.query.err === 'bad' ? 'Incorrect password.' : null });
+});
+
+router.post('/login', (req, res) => {
+  const username = (req.body && req.body.username) || '';
+  const pw = (req.body && req.body.password) || '';
+  if (isValidAdminLogin(username, pw)) {
+    res.cookie(AUTH_COOKIE, '1', { signed: true, httpOnly: true, sameSite: 'lax', maxAge: AUTH_MAX_AGE });
+    return res.redirect('/admin');
+  }
+  return res.redirect('/admin/login?err=bad');
+});
+
+router.post('/logout', (req, res) => {
+  res.clearCookie(AUTH_COOKIE);
+  return res.redirect('/admin/login');
+});
+
+router.use(requireAdmin);
 router.get('/', async (req, res) => {
   try {
     const { contestants, judges, settings } = await buildState();
-    res.render('admin_dashboard', { contestants, judges, settings, query: req.query, voteUrl: req.protocol + '://' + req.get('host') + '/vote' });
+    res.render('admin_dashboard', { contestants, judges, settings, query: req.query, voteUrl: publicVoteUrl(req) });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error loading admin');
@@ -187,3 +239,6 @@ router.post('/reset-votes', async (req, res) => {
 });
 
 module.exports = router;
+
+
+

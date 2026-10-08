@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Main Screen</title>
   <link rel="stylesheet" href="/css/main.css?v=<%= Date.now() %>" />
+  <link rel="stylesheet" href="/css/footer.css" />
   <!-- Canvas Confetti CDN -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
@@ -71,5 +72,8 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/main.js?v=<%= Date.now() %>"></script>
+
+  <%- include('partials/footer') %>
 </body>
 </html>
+

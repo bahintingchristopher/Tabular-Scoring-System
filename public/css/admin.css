@@ -16,7 +16,6 @@ button:hover { background: #3a3a3a; }
 .admin-table tbody tr:nth-child(even) { background: #181818; }
 .rename-form { display: flex; gap: 6px; justify-content: center; }
 .total, .avg { font-weight: bold; }
-
 /* ---- Admin: judge access panel ---- */
 .judge-access {
   width: 98%;
@@ -31,13 +30,29 @@ button:hover { background: #3a3a3a; }
 .flash.ok { background: #e6f5ea; border: 1px solid #2fb86a; color: #14532d; }
 .flash.warn { background: #fff6e0; border: 1px solid #d9a441; color: #6b4a06; }
 .flash.err { background: #fdeaea; border: 1px solid #c33; color: #7a1c1c; }
-.logout-form { display: inline; }
-.logout-btn { background: none; border: none; color: #8ab4f8; text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px; }
+.logout-form { display: inline-flex; align-items: center; }
+.logout-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid #8f0f1f;
+  background: radial-gradient(circle at 30% 30%, #e53935, #b71c1c);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.28);
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1.1;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.logout-btn:hover { background: radial-gradient(circle at 30% 30%, #ef5350, #c62828); }
 .admin-header-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 12px; }
 .admin-header-top h1 { margin-bottom: 0; }
 .main-screen-link { display: inline-block; padding: 12px 24px; border: 2px solid #2fb86a; border-radius: 6px; background: #1f4d2e; color: #d6ffea; font-size: 22px; font-weight: bold; text-decoration: none; letter-spacing: 1px; white-space: nowrap; }
 .main-screen-link:hover { background: #2a6b3f; }
-
 .header-links { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .vote-screen-link { display: inline-block; padding: 12px 24px; border: 2px solid #4a90d9; border-radius: 6px; background: #1f3a5a; color: #d6e8ff; font-size: 22px; font-weight: bold; text-decoration: none; letter-spacing: 1px; white-space: nowrap; }
 .vote-screen-link:hover { background: #2a5b8a; }
@@ -46,3 +61,12 @@ button:hover { background: #3a3a3a; }
 .admin-table td.votes { font-weight: bold; }
 .admin-table td.audience { font-weight: bold; color: #d6ffea; }
 .admin-table td.final { font-weight: 900; font-size: 30px; background: #1f4d2e; color: #d6ffea; }
+/* ---- Admin: login ---- */
+.admin-login { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.login-form { width: 320px; display: flex; flex-direction: column; gap: 12px; background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 24px; }
+.login-form h1 { font-size: 24px; }
+.login-form input { padding: 10px; border-radius: 4px; border: 1px solid #444; background: #1a1a1a; color: #eee; font-size: 16px; }
+.login-form button { padding: 10px; font-size: 16px; }
+.login-event { font-size: 30px; font-weight: bold; letter-spacing: 2px; text-align: center; color: #d6ffea; margin-bottom: 18px; text-transform: uppercase; }
+
+

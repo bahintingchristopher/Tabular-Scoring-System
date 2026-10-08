@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Judge Scoring</title>
   <link rel="stylesheet" href="/css/judge.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
 </head>
 <body>
   <div class="judge-wrap">
@@ -38,11 +39,15 @@
           <button type="submit" class="submit-btn" id="submit-btn" disabled>Submit Score</button>
         </form>
       <% } %>
-      <div class="back"><a href="/judge/<%= judge.id %>">← Back to list</a></div>
+      <div class="back"><a href="/judge/<%= judge.id %>">â† Back to list</a></div>
     </main>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/judge.js"></script>
+
+  <%- include('partials/footer') %>
 </body>
 </html>
+
+

@@ -1,8 +1,9 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { buildState } = require('../utils/state');
 const mainState = require('../utils/mainState');
 const QRCode = require('qrcode');
+const { publicVoteUrl } = require('../utils/publicUrl');
 
 // Endpoint to fetch current dynamic state as JSON
 router.get('/state', async (req, res) => {
@@ -31,7 +32,7 @@ router.get('/', async (req, res) => {
     const idx = total === 0 ? 0 : (currentIndex % total);
     const current = idx >= 0 ? contestants[idx] : null;
 
-    const voteUrl = req.protocol + '://' + req.get('host') + '/vote';
+    const voteUrl = publicVoteUrl(req);
     const qrDataUrl = await QRCode.toDataURL(voteUrl, { width: 1000, margin: 2 });
     const finalScores = contestants.map(c => ({
     name: c.name,
